@@ -1,0 +1,26 @@
+﻿@using Nemesys.ViewModels;
+@model ReportListViewModel
+
+@{
+    ViewData["Title"] = "Reports";
+}
+
+
+<h2>Showing @Model.TotalEntries report entries</h2>
+<div class="row">
+    @foreach (var report in Model.Reports)
+    {
+        <div class="card" style="width: 18rem;padding:20px; margin:20px;">
+            <img class="card-img-top" src="@report.ImageUrl" alt="Image" />
+            <div class="card-body">
+                <p class="small">Date of report: @report.DateOfReport.ToShortDateString()</p>
+                <p class="small">Date of spotting: @report.DateOfSpotting.ToShortDateString()</p>
+                <p class="small">Location: @report.Location</p>
+                <p class="small">TypeOfHazard: @report.TypeOfHazard</p>
+                <p class="small">Description: @report.Description</p>
+                <p class="small">Status: @report.Status</p>
+                <p class="small">UpVotes: @report.UpVotes</p>
+            </div>
+        </div>
+    }
+</div>
