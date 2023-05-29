@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Nemesys.Models.Contexts;
 using Nemesys.Models.Interfaces;
 using Nemesys.Models.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace Nemesys
 {
@@ -16,6 +17,9 @@ namespace Nemesys
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DevDatabaseConnection") ?? throw new
                     InvalidOperationException("Connection string for AppDbContext not found")));
+
+                        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
            
             builder.Services.AddTransient<INemesysRepository, NemesysRepository>();
             builder.Services.AddControllersWithViews();
@@ -43,7 +47,7 @@ namespace Nemesys
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //app.MapRazorPages();
+            app.MapRazorPages();
             app.Run();
         }
     }

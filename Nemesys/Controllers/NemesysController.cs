@@ -40,7 +40,7 @@ namespace Nemesys.Controllers
                     UpVotes = b.UpVotes
                     //Investigation = b.Investigation                
                 })
-            };
+            };  
             return View(model);  
         }
 
