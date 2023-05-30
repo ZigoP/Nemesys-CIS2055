@@ -20,6 +20,7 @@
                 <p class="small">Description: @report.Description</p>
                 <p class="small">Status: @report.Status</p>
                 <p class="small">UpVotes: @report.UpVotes</p>
+                    <a asp-controller="Nemesys" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
             </div>
         </div>
     }

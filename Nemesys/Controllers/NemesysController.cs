@@ -86,12 +86,61 @@ namespace Nemesys.Controllers
         {
             try
             {
-                var model = new CreateReportViewModel()
-                {
-                    DateOfReport = DateTime.UtcNow
+                CreateReportViewModel model = new CreateReportViewModel() { 
+                    TypeOfHazards = Enum.GetValues(typeof(HazardTypes)).Cast<HazardTypes>().ToList()
                 };
-
                 return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateReport([Bind("Location, DateOfSpotting, TypeOfHazard, Description, ImageToUpload")] CreateReportViewModel newReport)
+        {
+            try
+            {
+                if (ModelState.IsValid) 
+                {
+                    string fileName = "";
+                    if (newReport.ImageToUpload != null)
+                    {
+                        //At this point you should check size, extension etc...
+                        //Then persist using a new name for consistency (e.g. new Guid)
+                        var extension = "." + newReport.ImageToUpload.FileName.Split('.')[newReport.ImageToUpload.FileName.Split('.').Length - 1];
+                        fileName = Guid.NewGuid().ToString() + extension;
+                        var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\nemesys\\" + fileName;
+                        using (var bits = new FileStream(path, FileMode.Create))
+                        {
+                            newReport.ImageToUpload.CopyTo(bits);
+                        }
+                    }
+
+                    Report report = new Report()
+                    {
+                        DateOfReport = DateTime.UtcNow,
+                        Location = newReport.Location,
+                        DateOfSpotting = newReport.DateOfSpotting,
+                        TypeOfHazard = newReport.TypeOfHazard,
+                        Description = newReport.Description,
+                        Status = StatusTypes.Open,
+                        UpVotes = 0,
+                        ReporterId = _userManager.GetUserId(User),
+                        ImageUrl = "/images/nemesys/" + fileName
+
+                    };
+                    _nemesysRepository.CreateReport(report);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(new CreateReportViewModel());
+                }
             }
             catch (Exception ex)
             {

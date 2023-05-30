@@ -1,0 +1,64 @@
+﻿@namespace Nemesys.ViewModels
+@model CreateReportViewModel
+
+@{
+    ViewData["Title"] = "Create Report";
+}
+
+<h2>Create a Report</h2>
+
+<form asp-action="CreateReport" method="post" role="form" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Location" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfSpotting" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input asp-for="DateOfSpotting" class="form-control" />
+            <span asp-validation-for="DateOfSpotting" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="TypeOfHazard" class="col-md-2"></label>
+        <div class="col-md-5">
+            <select asp-for="TypeOfHazard"
+                    asp-items="@(new SelectList(Model.TypeOfHazards))">
+            </select>
+            <span asp-validation-for="TypeOfHazard" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="col-md-2"></label>
+        <div class="col-md-5">
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageToUpload" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input type="file" asp-for="ImageToUpload" class="form-control" />
+            <span asp-validation-for="ImageToUpload" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-5">
+            <input type="submit" class="btn btn-primary" value="Create Report" />
+        </div>
+    </div>
+</form>
+
+<a asp-controller="Nemesys" asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+
+@*Inject JQuery validation scripts in Layout*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
