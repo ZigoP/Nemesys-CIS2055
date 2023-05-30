@@ -4,6 +4,7 @@ namespace Nemesys.ViewModels
 {
     public class ReportViewModel
     {
+        public int Id { get; set; }
         public DateTime DateOfReport { get; set; }
         public string Location { get; set; }
         public DateTime DateOfSpotting { get; set; }
@@ -14,5 +15,7 @@ namespace Nemesys.ViewModels
         public string? ImageUrl { get; set; }
         public int UpVotes { get; set; }
         public Investigation? Investigation { get; set; }
+        public AuthorViewModel? Author { get; set; }
+
     }
 }

@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using Nemesys.ViewModels;
+@model ReportViewModel
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    //ViewData["Title"] = Model.Title;
+}
+
+<div class="card" style="width: 90%;padding:20px; margin:20px;">
+    <img class="card-img-top" src="@Model.ImageUrl" alt="Image" />
+    <div class="card-body">
+        <p class="small">Location: @Model.Location</p>
+        <p class="small">TypeOfHazard: @Model.TypeOfHazard</p>
+        <p class="small">Date of report: @Model.DateOfReport.ToShortDateString()</p>
+        <p class="small">Date of spotting: @Model.DateOfSpotting.ToShortDateString()</p>
+        <p class="card-text">Description: @Model.Description</p>
+    </div>
+</div>
+
+<a asp-controller="Nemesys" asp-action="Index" class="btn btn-primary">Back to list</a>
+@if (User.Identity.IsAuthenticated)
+{
+    if (UserManager.GetUserAsync(User).Result.Id == Model.Author.Id)
+    {
+        <a asp-controller="Nemesys" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+    }
+}
+
+

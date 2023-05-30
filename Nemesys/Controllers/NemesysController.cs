@@ -36,6 +36,7 @@ namespace Nemesys.Controllers
                 .OrderByDescending(b => b.DateOfReport)
                 .Select(b => new ReportViewModel
                 {
+                    Id = b.Id,
                     DateOfReport = b.DateOfReport,
                     Location = b.Location,
                     DateOfSpotting = b.DateOfSpotting,
@@ -149,7 +150,60 @@ namespace Nemesys.Controllers
             }
         }
 
+        public IActionResult Details(int id)
+        {
+            try
+            {
+                var report = _nemesysRepository.GetReportById(id);
+                if (report == null)
+                    return NotFound();
+                else
+                {
+                    var model = new ReportViewModel()
+                    {
+                        Id = report.Id,
+                        DateOfReport = report.DateOfReport,
+                        Location = report.Location,
+                        DateOfSpotting = report.DateOfSpotting,
+                        TypeOfHazard = report.TypeOfHazard,
+                        Description = report.Description,
+                        Status = report.Status,
+                        UpVotes = report.UpVotes,
+                        Reporter = report.Reporter,
+                        ImageUrl = report.ImageUrl,
+                        Author = new AuthorViewModel()
+                        {
+                            Id = report.ReporterId,
+                            Name = (_userManager.FindByIdAsync(report.ReporterId).Result != null) ?
+                                _userManager.FindByIdAsync(report.ReporterId).Result.UserName :
+                                "Anonymous"
+                        }
+                    };
 
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+
+        /*[HttpGet]
+        [Authorize]
+        public IActionResult CreateInvestigation() 
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateInvestigation([Bind()])
+        {
+            return View();
+        }*/
     }
 }
 
