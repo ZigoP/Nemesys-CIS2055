@@ -324,7 +324,22 @@ namespace Nemesys.Models.Repositories
 
         public void upvoteReport(Report report)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Report foundReport = GetReportById(report.Id);
+                if (foundReport != null)
+                {
+                    foundReport.UpVotes++;
+                }
+
+                _appDbContext.Entry(foundReport).State = EntityState.Modified;
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
     }
 }

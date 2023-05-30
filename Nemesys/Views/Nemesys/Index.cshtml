@@ -16,6 +16,12 @@
                 <p class="small">Status: @report.Status</p>
                 <p class="small">UpVotes: @report.UpVotes</p>
                     <a asp-controller="Nemesys" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
+                    <form asp-action="UpVote" method="post" role="form" enctype="multipart/form-data">
+                    <input asp-for="@report.Id" type="hidden" class="form-control" value="@report.Id" />
+                        <div class="col-md-5">
+                            <input type="submit" class="btn btn-primary" value="UpVote" />
+                        </div>
+                    </form>
             </div>
         </div>
     }

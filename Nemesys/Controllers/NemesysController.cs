@@ -267,6 +267,34 @@ namespace Nemesys.Controllers
                 return View("Error");
             }
         }
+
+        /*[HttpGet]
+        [Authorize]
+        public IActionResult UpVote(int id)
+        {
+            var reportToUpVote = _nemesysRepository.GetReportById(id);
+            if (reportToUpVote != null)
+            {
+                reportToUpVote.UpVotes++;
+                _nemesysRepository.upvoteReport(reportToUpVote);
+            }
+            return RedirectToAction("Index");
+        }*/
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpVote([Bind("Id")] Report report)
+        {
+
+            var reportToUpVote = _nemesysRepository.GetReportById(report.Id);
+            if (reportToUpVote != null)
+            {
+                //reportToUpVote.UpVotes++;
+                _nemesysRepository.upvoteReport(reportToUpVote);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
 
