@@ -10,12 +10,35 @@
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
     <img class="card-img-top" src="@Model.ImageUrl" alt="Image" />
     <div class="card-body">
+        <p class="small">Reporter: @Model.Author.Name @Model.Author.Surname</p>
+        <p class="small">Reporter's Email: @Model.Author.Email</p>
+        <p class="small">Reporter's Phone Number: @Model.Author.PhoneNumber</p>
+        <p class="card-text">Description: @Model.Description</p>
         <p class="small">Location: @Model.Location</p>
         <p class="small">TypeOfHazard: @Model.TypeOfHazard</p>
         <p class="small">Date of report: @Model.DateOfReport.ToShortDateString()</p>
         <p class="small">Date of spotting: @Model.DateOfSpotting.ToShortDateString()</p>
-        <p class="card-text">Description: @Model.Description</p>
-        <a asp-controller="Nemesys" asp-action="CreateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Add Investigation</a>
+        @{
+            if (@Model.Investigation != null)
+            {
+                <div class="card-body">
+                    <p class="card-text">Investigation Description: @Model.Investigation.Description</p>
+                    <p class="small">Investigator: @Model.Investigation.Author.Name @Model.Investigation.Author.Surname</p>
+                    <p class="small">Investigator's Email: @Model.Investigation.Author.Email</p>
+                    <p class="small">Investigator's Phone Number: @Model.Investigation.Author.PhoneNumber</p>
+                    <form asp-action="DeleteInvestigation" method="post" role="form" enctype="multipart/form-data">
+                        <input asp-for="@Model.Investigation.Id" type="hidden" class="form-control" value="@Model.Investigation.Id" />
+                        <div class="col-md-5">
+                            <input type="submit" class="btn btn-primary" value="Delete Investigation" />
+                        </div>
+                    </form>
+                </div>
+            }
+            else
+            {
+                 <a asp-controller="Nemesys" asp-action="CreateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Add Investigation</a>
+            }
+        }
     </div>
 </div>
 

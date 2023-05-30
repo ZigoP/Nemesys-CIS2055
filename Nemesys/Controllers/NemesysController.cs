@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Composition;
+using Nemesys.Models.Repositories;
 
 namespace Nemesys.Controllers
 {
@@ -44,10 +45,16 @@ namespace Nemesys.Controllers
                     TypeOfHazard = b.TypeOfHazard, 
                     Description = b.Description, 
                     Status = b.Status,
-                    //TODO: UNCOMMENT AFTER CREATING REPORTER AND INVESTIGATION
                     Reporter = b.Reporter,
                     ImageUrl = b.ImageUrl,
-                    UpVotes = b.UpVotes
+                    UpVotes = b.UpVotes,
+                    Author = new AuthorViewModel() { 
+                        Id = b.ReporterId,
+                        Name = b.Reporter.Name,
+                        Surname = b.Reporter.Surname,
+                        Email = b.Reporter.Email,
+                        PhoneNumber = b.Reporter.PhoneNumber
+                    }
                     //Investigation = b.Investigation                
                 })
             };  
@@ -175,11 +182,38 @@ namespace Nemesys.Controllers
                         Author = new AuthorViewModel()
                         {
                             Id = report.ReporterId,
-                            Name = (_userManager.FindByIdAsync(report.ReporterId).Result != null) ?
+                            /*Name = (_userManager.FindByIdAsync(report.ReporterId).Result != null) ?
                                 _userManager.FindByIdAsync(report.ReporterId).Result.UserName :
-                                "Anonymous"
+                                "Anonymous"*/
+                            Name = report.Reporter.Name,
+                            Surname = report.Reporter.Surname,
+                            Email = report.Reporter.Email,
+                            PhoneNumber = report.Reporter.PhoneNumber
                         }
                     };
+                    if (report.InvestigationId != null) {
+                        Investigation investigation = _nemesysRepository.GetInvestigationById(report.InvestigationId ?? default(int));
+                        model.Investigation = new InvestigationViewModel()
+                        {
+                            Id = investigation.Id,
+                            Description = investigation.Description,
+                            Investigator = investigation.Investigator,                          
+                        };
+                        if (investigation.InvestigatorId != null) {
+                            Investigator investigator = _nemesysRepository.GetInvestigatorById(investigation.InvestigatorId);
+                            model.Investigation.Author = new AuthorViewModel()
+                            {
+                                Id = investigator.Id,
+                                /*Name = (_userManager.FindByIdAsync(report.ReporterId).Result != null) ?
+                                    _userManager.FindByIdAsync(report.ReporterId).Result.UserName :
+                                    "Anonymous"*/
+                                Name = investigator.Name,
+                                Surname = investigator.Surname,
+                                Email = investigator.Email,
+                                PhoneNumber = investigator.PhoneNumber
+                            };
+                        }
+                    }
 
                     return View(model);
                 }
@@ -241,6 +275,7 @@ namespace Nemesys.Controllers
                             InvestigatorId = _userManager.GetUserId(User)
                         };
                         _nemesysRepository.CreateInvestigation(investigation);
+                        newInvestigation.Report.InvestigationId = investigation.Id;
                         _nemesysRepository.UpdateReport(newInvestigation.Report);
                         return RedirectToAction("Index");
                     }
@@ -268,18 +303,6 @@ namespace Nemesys.Controllers
             }
         }
 
-        /*[HttpGet]
-        [Authorize]
-        public IActionResult UpVote(int id)
-        {
-            var reportToUpVote = _nemesysRepository.GetReportById(id);
-            if (reportToUpVote != null)
-            {
-                reportToUpVote.UpVotes++;
-                _nemesysRepository.upvoteReport(reportToUpVote);
-            }
-            return RedirectToAction("Index");
-        }*/
 
         [HttpPost]
         [Authorize]
@@ -290,9 +313,43 @@ namespace Nemesys.Controllers
             var reportToUpVote = _nemesysRepository.GetReportById(report.Id);
             if (reportToUpVote != null)
             {
-                //reportToUpVote.UpVotes++;
                 _nemesysRepository.upvoteReport(reportToUpVote);
             }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteReport([Bind("Id")] Report report)
+        {
+            Report reportToDelete = _nemesysRepository.GetReportById(report.Id);
+            if (reportToDelete != null)
+            {   
+                Investigation investigation = _nemesysRepository.GetInvestigationById(reportToDelete.InvestigationId ?? default(int));   
+                if(investigation != null)
+                {
+                    DeleteInvestigation(investigation);
+                }
+                _nemesysRepository.deleteReport(reportToDelete);
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteInvestigation([Bind("Id")] Investigation investigation)
+        {
+            Investigation investigationToDelete = _nemesysRepository.GetInvestigationById(investigation.Id);
+
+            if (investigationToDelete != null)
+            {
+                Report report = _nemesysRepository.GetReportById(investigationToDelete.ReportId);
+                report.InvestigationId = null;
+                _nemesysRepository.UpdateReport(report);
+                _nemesysRepository.deleteInvestigation(investigationToDelete);
+            }
+
             return RedirectToAction("Index");
         }
     }

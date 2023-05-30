@@ -14,8 +14,8 @@ namespace Nemesys.ViewModels
         public Reporter Reporter { get; set; }
         public string? ImageUrl { get; set; }
         public int UpVotes { get; set; }
-        public Investigation? Investigation { get; set; }
-        public AuthorViewModel? Author { get; set; }
+        public InvestigationViewModel? Investigation { get; set; }
+        public AuthorViewModel Author { get; set; }
 
     }
 }

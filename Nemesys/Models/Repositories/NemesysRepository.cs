@@ -94,6 +94,7 @@ namespace Nemesys.Models.Repositories
             try
             {
                 _appDbContext.Investigations.Remove(investigation);
+                _appDbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -106,7 +107,8 @@ namespace Nemesys.Models.Repositories
         {
             try
             {
-                _appDbContext.Reports.Remove(report);   
+                _appDbContext.Reports.Remove(report);
+                _appDbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -121,6 +123,7 @@ namespace Nemesys.Models.Repositories
             try
             {
                 _appDbContext.Reporters.Remove(reporter);
+                _appDbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -133,6 +136,7 @@ namespace Nemesys.Models.Repositories
             try
             {
                 _appDbContext.Investigators.Remove(investigator);
+                _appDbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -191,7 +195,7 @@ namespace Nemesys.Models.Repositories
         {
             try
             {
-                return _appDbContext.Investigations.Include(b => b.Report).FirstOrDefault(b => b.Id == investigationId);
+                return _appDbContext.Investigations.FirstOrDefault(b => b.Id == investigationId);
             }
             catch (Exception ex)
             {
@@ -204,7 +208,7 @@ namespace Nemesys.Models.Repositories
         {
             try
             {
-                return _appDbContext.Investigators.Include(c => c.Investigations).FirstOrDefault(c => c.Id == investigatorId);
+                return _appDbContext.Investigators.FirstOrDefault(c => c.Id == investigatorId);
             }
             catch (Exception ex)
             {
