@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Models.Contexts;
 
@@ -11,9 +12,11 @@ using Nemesys.Models.Contexts;
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230529221357_stringIdForReporter")]
+    partial class stringIdForReporter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -354,8 +357,8 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfReport = new DateTime(2023, 5, 29, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6835),
-                            DateOfSpotting = new DateTime(2023, 5, 29, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6838),
+                            DateOfReport = new DateTime(2023, 5, 29, 22, 13, 57, 274, DateTimeKind.Utc).AddTicks(3460),
+                            DateOfSpotting = new DateTime(2023, 5, 29, 22, 13, 57, 274, DateTimeKind.Utc).AddTicks(3464),
                             Description = "asdasd",
                             ImageUrl = "",
                             Location = "asdasd",
@@ -367,8 +370,8 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 2,
-                            DateOfReport = new DateTime(2023, 5, 28, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6849),
-                            DateOfSpotting = new DateTime(2023, 5, 27, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6854),
+                            DateOfReport = new DateTime(2023, 5, 28, 22, 13, 57, 274, DateTimeKind.Utc).AddTicks(3468),
+                            DateOfSpotting = new DateTime(2023, 5, 27, 22, 13, 57, 274, DateTimeKind.Utc).AddTicks(3472),
                             Description = "asdvsdvvsdvsasd",
                             ImageUrl = "",
                             Location = "asadsdfdvdfvdasd",
@@ -401,16 +404,14 @@ namespace Nemesys.Migrations
                         {
                             Id = "firstReporterId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ffe1548-bc91-4f8e-b00e-33370790f688",
-                            Email = "adas@gams.sca",
+                            ConcurrencyStamp = "f292fcf3-ed2f-48a8-a5df-6de7f8c990b1",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAS@GAMS.SCA",
                             NormalizedUserName = "ADAS@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMVuoKKlhdwA3aGbohqMp2vKNxwgbdH4MX37S8CI1GxHx7h6ztVvtObpwJN9KlHkXg==",
-                            PhoneNumber = "1234567890",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOHys+GV7oTS22SXOJrLJcnALYm96dQy+I3r88Z03kqS9/Of4GTQF155jBYCi7UGWw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "002d0d10-8213-4c1c-ab82-5b9e0c6d3d29",
+                            SecurityStamp = "7547ad37-ff53-4795-ab9e-99a883478e38",
                             TwoFactorEnabled = false,
                             UserName = "adas@gams.sca",
                             Name = "First",
@@ -421,16 +422,14 @@ namespace Nemesys.Migrations
                         {
                             Id = "secondReporterId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "53223edc-8e81-4245-9ba4-71c9602a4e40",
-                            Email = "basd@gams.sca",
+                            ConcurrencyStamp = "ce36f31a-ff9a-4ba7-8703-acc2e5ac2de7",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "BASD@GAMS.SCA",
                             NormalizedUserName = "BASD@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDB1X69+MyrARvOrpf0qOQqBQNIRdkKLdp71o4B3/9vWkKRFgqxz0FpFiaU96Xe1kA==",
-                            PhoneNumber = "1234567890",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPtiNAXWAEarQKWupKort6fFaAKbndKODozvmuyMGmygHGv6nmYLkS2Q4hGil/4u6g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "55039949-ae76-4427-ad53-27bf00fb0510",
+                            SecurityStamp = "255decfc-f48c-474e-a26a-9e3c90c286b2",
                             TwoFactorEnabled = false,
                             UserName = "basd@gams.sca",
                             Name = "Second",
@@ -450,16 +449,14 @@ namespace Nemesys.Migrations
                         {
                             Id = "firstInvestigatorId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6826e668-b57f-43b8-aeee-0d75501c4323",
-                            Email = "dasd@gams.sca",
+                            ConcurrencyStamp = "6e6fe156-adec-40c0-9818-580aaaf56ada",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DASD@GAMS.SCA",
                             NormalizedUserName = "DASD@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGo/uKbusQlja+UnGFWZNuWLauAj74f7wlYm8bqZpq4YcI4BEFA7EZpcVdJPUPwadA==",
-                            PhoneNumber = "1234567890",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKGG/pQWkuGmWG+voaOdzBmKVLX3wisjowtMrxgEy7lZVvy4dG5lKt7Qy1DF+0vvqQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f14ef54-f8b8-4611-b204-9d63f4107979",
+                            SecurityStamp = "3e835d16-51dc-41bd-a58c-a4a836ac6efe",
                             TwoFactorEnabled = false,
                             UserName = "dasd@gams.sca",
                             Name = "First",

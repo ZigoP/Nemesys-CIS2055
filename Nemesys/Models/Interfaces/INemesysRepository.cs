@@ -1,4 +1,6 @@
-﻿namespace Nemesys.Models.Interfaces
+﻿using System.Xml.Serialization;
+
+namespace Nemesys.Models.Interfaces
 {
     public interface INemesysRepository
     {
@@ -6,7 +8,6 @@
         IEnumerable<Investigator> GetAllInvestigators();
         IEnumerable<Report> GetAllReports();
         IEnumerable<Investigation> GetAllInvestigations();
-
         Reporter GetReporterById(int reporterId);
         Investigator GetInvestigatorById(int investigatorId);
         Report GetReportById(int reportId);
@@ -15,6 +16,7 @@
         void CreateInvestigator(Investigator investigator);
         void CreateReport(Report report);
         void CreateInvestigation(Investigation investigation);
+        void AssignToRole(string roleId, string userId);
 
         //void UpdateBlogPost(BlogPost updatedBlogPost);
 

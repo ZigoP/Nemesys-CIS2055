@@ -6,9 +6,9 @@ namespace Nemesys.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<NemesysController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<NemesysController> logger)
         {
             _logger = logger;
         }

@@ -15,7 +15,7 @@ namespace Nemesys.Models
         public HazardTypes TypeOfHazard { get; set; }
         public string Description { get; set; }
         public StatusTypes Status { get; set; }
-        public int ReporterId { get; set; }
+        public string ReporterId { get; set; }
         public Reporter Reporter { get; set; }
         public string ImageUrl { get; set; }
         public int UpVotes { get; set; }

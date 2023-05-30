@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Models.Contexts;
 
@@ -11,9 +12,11 @@ using Nemesys.Models.Contexts;
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230529172343_modelChanges")]
+    partial class modelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,29 +50,6 @@ namespace Nemesys.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "adminRoleId",
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "reporterRoleId",
-                            ConcurrencyStamp = "1",
-                            Name = "Reporter",
-                            NormalizedName = "REPORTER"
-                        },
-                        new
-                        {
-                            Id = "investigatorRoleId",
-                            ConcurrencyStamp = "1",
-                            Name = "Invetigator",
-                            NormalizedName = "INVESTIGATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -232,23 +212,6 @@ namespace Nemesys.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "firstReporterId",
-                            RoleId = "reporterRoleId"
-                        },
-                        new
-                        {
-                            UserId = "secondReporterId",
-                            RoleId = "reporterRoleId"
-                        },
-                        new
-                        {
-                            UserId = "firstInvestigatorId",
-                            RoleId = "investigatorRoleId"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -354,12 +317,12 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfReport = new DateTime(2023, 5, 29, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6835),
-                            DateOfSpotting = new DateTime(2023, 5, 29, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6838),
+                            DateOfReport = new DateTime(2023, 5, 29, 17, 23, 42, 884, DateTimeKind.Utc).AddTicks(7449),
+                            DateOfSpotting = new DateTime(2023, 5, 29, 17, 23, 42, 884, DateTimeKind.Utc).AddTicks(7451),
                             Description = "asdasd",
                             ImageUrl = "",
                             Location = "asdasd",
-                            ReporterId = "firstReporterId",
+                            ReporterId = "randomId1",
                             Status = 0,
                             TypeOfHazard = 4,
                             UpVotes = 5
@@ -367,12 +330,12 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 2,
-                            DateOfReport = new DateTime(2023, 5, 28, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6849),
-                            DateOfSpotting = new DateTime(2023, 5, 27, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6854),
+                            DateOfReport = new DateTime(2023, 5, 28, 17, 23, 42, 884, DateTimeKind.Utc).AddTicks(7453),
+                            DateOfSpotting = new DateTime(2023, 5, 27, 17, 23, 42, 884, DateTimeKind.Utc).AddTicks(7457),
                             Description = "asdvsdvvsdvsasd",
                             ImageUrl = "",
                             Location = "asadsdfdvdfvdasd",
-                            ReporterId = "secondReporterId",
+                            ReporterId = "randomId2",
                             Status = 0,
                             TypeOfHazard = 2,
                             UpVotes = 7
@@ -399,40 +362,28 @@ namespace Nemesys.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "firstReporterId",
+                            Id = "randomId1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ffe1548-bc91-4f8e-b00e-33370790f688",
-                            Email = "adas@gams.sca",
-                            EmailConfirmed = true,
+                            ConcurrencyStamp = "6382a9e6-6598-4bf0-b86c-d7faa96115da",
+                            EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADAS@GAMS.SCA",
-                            NormalizedUserName = "ADAS@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMVuoKKlhdwA3aGbohqMp2vKNxwgbdH4MX37S8CI1GxHx7h6ztVvtObpwJN9KlHkXg==",
-                            PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "002d0d10-8213-4c1c-ab82-5b9e0c6d3d29",
+                            SecurityStamp = "c59c931d-2023-48ea-b95d-634d2ecdb903",
                             TwoFactorEnabled = false,
-                            UserName = "adas@gams.sca",
                             Name = "First",
                             ReportersRanking = 1,
                             Surname = "Reporter"
                         },
                         new
                         {
-                            Id = "secondReporterId",
+                            Id = "randomId2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "53223edc-8e81-4245-9ba4-71c9602a4e40",
-                            Email = "basd@gams.sca",
-                            EmailConfirmed = true,
+                            ConcurrencyStamp = "aa14a395-8dbe-4c13-b825-984e14d84683",
+                            EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "BASD@GAMS.SCA",
-                            NormalizedUserName = "BASD@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDB1X69+MyrARvOrpf0qOQqBQNIRdkKLdp71o4B3/9vWkKRFgqxz0FpFiaU96Xe1kA==",
-                            PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "55039949-ae76-4427-ad53-27bf00fb0510",
+                            SecurityStamp = "b2fd4f40-13b0-42c4-a972-d480de141000",
                             TwoFactorEnabled = false,
-                            UserName = "basd@gams.sca",
                             Name = "Second",
                             ReportersRanking = 2,
                             Surname = "Reporter"
@@ -444,28 +395,6 @@ namespace Nemesys.Migrations
                     b.HasBaseType("Nemesys.Models.Reporter");
 
                     b.HasDiscriminator().HasValue("Investigator");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "firstInvestigatorId",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6826e668-b57f-43b8-aeee-0d75501c4323",
-                            Email = "dasd@gams.sca",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "DASD@GAMS.SCA",
-                            NormalizedUserName = "DASD@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGo/uKbusQlja+UnGFWZNuWLauAj74f7wlYm8bqZpq4YcI4BEFA7EZpcVdJPUPwadA==",
-                            PhoneNumber = "1234567890",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f14ef54-f8b8-4611-b204-9d63f4107979",
-                            TwoFactorEnabled = false,
-                            UserName = "dasd@gams.sca",
-                            Name = "First",
-                            ReportersRanking = 3,
-                            Surname = "Investigator"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

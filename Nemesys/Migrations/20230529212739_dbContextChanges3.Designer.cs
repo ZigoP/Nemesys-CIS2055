@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Models.Contexts;
 
@@ -11,9 +12,11 @@ using Nemesys.Models.Contexts;
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230529212739_dbContextChanges3")]
+    partial class dbContextChanges3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,29 +50,6 @@ namespace Nemesys.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "adminRoleId",
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "reporterRoleId",
-                            ConcurrencyStamp = "1",
-                            Name = "Reporter",
-                            NormalizedName = "REPORTER"
-                        },
-                        new
-                        {
-                            Id = "investigatorRoleId",
-                            ConcurrencyStamp = "1",
-                            Name = "Invetigator",
-                            NormalizedName = "INVESTIGATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -107,10 +87,6 @@ namespace Nemesys.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -164,10 +140,6 @@ namespace Nemesys.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -232,23 +204,6 @@ namespace Nemesys.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "firstReporterId",
-                            RoleId = "reporterRoleId"
-                        },
-                        new
-                        {
-                            UserId = "secondReporterId",
-                            RoleId = "reporterRoleId"
-                        },
-                        new
-                        {
-                            UserId = "firstInvestigatorId",
-                            RoleId = "investigatorRoleId"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -284,9 +239,8 @@ namespace Nemesys.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InvestigatorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("InvestigatorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ReportId")
                         .HasColumnType("int");
@@ -327,9 +281,8 @@ namespace Nemesys.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReporterId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ReporterId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -354,12 +307,12 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfReport = new DateTime(2023, 5, 29, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6835),
-                            DateOfSpotting = new DateTime(2023, 5, 29, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6838),
+                            DateOfReport = new DateTime(2023, 5, 29, 21, 27, 39, 394, DateTimeKind.Utc).AddTicks(3455),
+                            DateOfSpotting = new DateTime(2023, 5, 29, 21, 27, 39, 394, DateTimeKind.Utc).AddTicks(3457),
                             Description = "asdasd",
                             ImageUrl = "",
                             Location = "asdasd",
-                            ReporterId = "firstReporterId",
+                            ReporterId = 10,
                             Status = 0,
                             TypeOfHazard = 4,
                             UpVotes = 5
@@ -367,12 +320,12 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 2,
-                            DateOfReport = new DateTime(2023, 5, 28, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6849),
-                            DateOfSpotting = new DateTime(2023, 5, 27, 22, 15, 49, 539, DateTimeKind.Utc).AddTicks(6854),
+                            DateOfReport = new DateTime(2023, 5, 28, 21, 27, 39, 394, DateTimeKind.Utc).AddTicks(3460),
+                            DateOfSpotting = new DateTime(2023, 5, 27, 21, 27, 39, 394, DateTimeKind.Utc).AddTicks(3468),
                             Description = "asdvsdvvsdvsasd",
                             ImageUrl = "",
                             Location = "asadsdfdvdfvdasd",
-                            ReporterId = "secondReporterId",
+                            ReporterId = 11,
                             Status = 0,
                             TypeOfHazard = 2,
                             UpVotes = 7
@@ -381,61 +334,117 @@ namespace Nemesys.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Reporter", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ReportersRanking")
                         .HasColumnType("int");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("Reporter");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reporters");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Reporter");
+
+                    b.UseTphMappingStrategy();
 
                     b.HasData(
                         new
                         {
-                            Id = "firstReporterId",
+                            Id = 10,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ffe1548-bc91-4f8e-b00e-33370790f688",
+                            ConcurrencyStamp = "97de1788-66e8-491e-adb4-28364d5022b4",
                             Email = "adas@gams.sca",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
+                            Name = "First",
                             NormalizedEmail = "ADAS@GAMS.SCA",
                             NormalizedUserName = "ADAS@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMVuoKKlhdwA3aGbohqMp2vKNxwgbdH4MX37S8CI1GxHx7h6ztVvtObpwJN9KlHkXg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKr1Z9nlO/kvmg9r6VJuur9cKwdwnymm69N2prDddM9fCqgHCSx82/ADKDqP3Ig0sw==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "002d0d10-8213-4c1c-ab82-5b9e0c6d3d29",
-                            TwoFactorEnabled = false,
-                            UserName = "adas@gams.sca",
-                            Name = "First",
                             ReportersRanking = 1,
-                            Surname = "Reporter"
+                            Surname = "Reporter",
+                            TwoFactorEnabled = false,
+                            UserName = "adas@gams.sca"
                         },
                         new
                         {
-                            Id = "secondReporterId",
+                            Id = 11,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "53223edc-8e81-4245-9ba4-71c9602a4e40",
+                            ConcurrencyStamp = "f0de6f63-2ca9-4429-a797-ed4a5e8ccdf4",
                             Email = "basd@gams.sca",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
+                            Name = "Second",
                             NormalizedEmail = "BASD@GAMS.SCA",
                             NormalizedUserName = "BASD@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDB1X69+MyrARvOrpf0qOQqBQNIRdkKLdp71o4B3/9vWkKRFgqxz0FpFiaU96Xe1kA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAkEXieNgY+5YMweKPbmKQAJvz2tvfy5p0oxDGThY63BIZwO/fkiEp/Rt/fTbMZPGw==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "55039949-ae76-4427-ad53-27bf00fb0510",
-                            TwoFactorEnabled = false,
-                            UserName = "basd@gams.sca",
-                            Name = "Second",
                             ReportersRanking = 2,
-                            Surname = "Reporter"
+                            Surname = "Reporter",
+                            TwoFactorEnabled = false,
+                            UserName = "basd@gams.sca"
                         });
                 });
 
@@ -448,23 +457,22 @@ namespace Nemesys.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "firstInvestigatorId",
+                            Id = 12,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6826e668-b57f-43b8-aeee-0d75501c4323",
+                            ConcurrencyStamp = "f41f6f26-5e2b-4005-a102-bb43a5a68be6",
                             Email = "dasd@gams.sca",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
+                            Name = "First",
                             NormalizedEmail = "DASD@GAMS.SCA",
                             NormalizedUserName = "DASD@GAMS.SCA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGo/uKbusQlja+UnGFWZNuWLauAj74f7wlYm8bqZpq4YcI4BEFA7EZpcVdJPUPwadA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBW5lSiLY6BwK8uOfBe2PK1uzI66k+BgaAF8lWMFybDE3jsORoszs/8CA/qSmSHW+A==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f14ef54-f8b8-4611-b204-9d63f4107979",
-                            TwoFactorEnabled = false,
-                            UserName = "dasd@gams.sca",
-                            Name = "First",
                             ReportersRanking = 3,
-                            Surname = "Investigator"
+                            Surname = "Investigator",
+                            TwoFactorEnabled = false,
+                            UserName = "dasd@gams.sca"
                         });
                 });
 

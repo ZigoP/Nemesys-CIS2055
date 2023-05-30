@@ -14,6 +14,12 @@ namespace Nemesys
 
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Host.ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+            });
+
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DevDatabaseConnection") ?? throw new
                     InvalidOperationException("Connection string for AppDbContext not found")));
