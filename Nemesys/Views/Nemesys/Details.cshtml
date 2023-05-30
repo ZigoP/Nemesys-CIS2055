@@ -15,6 +15,7 @@
         <p class="small">Date of report: @Model.DateOfReport.ToShortDateString()</p>
         <p class="small">Date of spotting: @Model.DateOfSpotting.ToShortDateString()</p>
         <p class="card-text">Description: @Model.Description</p>
+        <a asp-controller="Nemesys" asp-action="CreateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Add Investigation</a>
     </div>
 </div>
 

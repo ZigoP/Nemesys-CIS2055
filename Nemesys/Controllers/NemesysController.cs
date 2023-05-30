@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Composition;
 
 namespace Nemesys.Controllers
 {
@@ -190,20 +191,82 @@ namespace Nemesys.Controllers
             }
         }
 
-        /*[HttpGet]
-        [Authorize]
-        public IActionResult CreateInvestigation() 
-        {
-            return View();
-        }
-
         [HttpGet]
         [Authorize]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateInvestigation([Bind()])
+        public IActionResult CreateInvestigation(int id) 
         {
-            return View();
-        }*/
+            try
+            {
+                var report = _nemesysRepository.GetReportById(id);
+                if (report == null)
+                    return NotFound();
+                else
+                {
+                    CreateInvestigationViewModel model = new CreateInvestigationViewModel()
+                    {
+                        ReportId = id,
+                        Statuses = Enum.GetValues(typeof(StatusTypes)).Cast<StatusTypes>().ToList()
+                    };
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateInvestigation([Bind("Description, ReportId, Status")] CreateInvestigationViewModel newInvestigation)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var report = _nemesysRepository.GetReportById(newInvestigation.ReportId);
+                    if (report == null)
+                        return NotFound();
+                    else
+                    {
+                        newInvestigation.Report = report;
+                        newInvestigation.Report.Status = newInvestigation.Status;
+                        Investigation investigation = new Investigation()
+                        {
+                            Description = newInvestigation.Description,
+                            ReportId = newInvestigation.ReportId,
+                            // Report = newInvestigation.Report,
+                            InvestigatorId = _userManager.GetUserId(User)
+                        };
+                        _nemesysRepository.CreateInvestigation(investigation);
+                        _nemesysRepository.UpdateReport(newInvestigation.Report);
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    var report = _nemesysRepository.GetReportById(newInvestigation.ReportId);
+                    if (report == null)
+                        return NotFound();
+                    else
+                    {
+                        CreateInvestigationViewModel model = new CreateInvestigationViewModel()
+                        {
+                            Report = report,
+                            Statuses = Enum.GetValues(typeof(StatusTypes)).Cast<StatusTypes>().ToList()
+                        };
+                        return View(model);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
     }
 }
 
