@@ -5,6 +5,7 @@ namespace Nemesys.ViewModels
     public class ReportViewModel
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public DateTime DateOfReport { get; set; }
         public string Location { get; set; }
         public DateTime DateOfSpotting { get; set; }
@@ -16,6 +17,8 @@ namespace Nemesys.ViewModels
         public int UpVotes { get; set; }
         public InvestigationViewModel? Investigation { get; set; }
         public AuthorViewModel Author { get; set; }
+        public DateTime? LastUpdateDate { get; set; }
+
 
     }
 }

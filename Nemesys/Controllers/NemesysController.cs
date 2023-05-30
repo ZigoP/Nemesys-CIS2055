@@ -39,6 +39,7 @@ namespace Nemesys.Controllers
                 .Select(b => new ReportViewModel
                 {
                     Id = b.Id,
+                    Name = b.Name,
                     DateOfReport = b.DateOfReport,
                     Location = b.Location,
                     DateOfSpotting = b.DateOfSpotting,
@@ -55,7 +56,6 @@ namespace Nemesys.Controllers
                         Email = b.Reporter.Email,
                         PhoneNumber = b.Reporter.PhoneNumber
                     }
-                    //Investigation = b.Investigation                
                 })
             };  
             return View(model);  
@@ -110,7 +110,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateReport([Bind("Location, DateOfSpotting, TypeOfHazard, Description, ImageToUpload")] CreateReportViewModel newReport)
+        public IActionResult CreateReport([Bind("Name, Location, DateOfSpotting, TypeOfHazard, Description, ImageToUpload")] CreateReportViewModel newReport)
         {
             try
             {
@@ -132,6 +132,7 @@ namespace Nemesys.Controllers
 
                     Report report = new Report()
                     {
+                        Name = newReport.Name,
                         DateOfReport = DateTime.UtcNow,
                         Location = newReport.Location,
                         DateOfSpotting = newReport.DateOfSpotting,
@@ -170,6 +171,7 @@ namespace Nemesys.Controllers
                     var model = new ReportViewModel()
                     {
                         Id = report.Id,
+                        Name = report.Name,
                         DateOfReport = report.DateOfReport,
                         Location = report.Location,
                         DateOfSpotting = report.DateOfSpotting,
@@ -196,6 +198,7 @@ namespace Nemesys.Controllers
                         model.Investigation = new InvestigationViewModel()
                         {
                             Id = investigation.Id,
+                            Name = investigation.Name,
                             Description = investigation.Description,
                             Investigator = investigation.Investigator,                          
                         };
@@ -254,7 +257,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateInvestigation([Bind("Description, ReportId, Status")] CreateInvestigationViewModel newInvestigation)
+        public IActionResult CreateInvestigation([Bind("Name, Description, ReportId, Status")] CreateInvestigationViewModel newInvestigation)
         {
             try
             {
@@ -269,6 +272,7 @@ namespace Nemesys.Controllers
                         newInvestigation.Report.Status = newInvestigation.Status;
                         Investigation investigation = new Investigation()
                         {
+                            Name = newInvestigation.Name,
                             Description = newInvestigation.Description,
                             ReportId = newInvestigation.ReportId,
                             // Report = newInvestigation.Report,

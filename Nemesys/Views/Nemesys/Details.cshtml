@@ -10,6 +10,7 @@
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
     <img class="card-img-top" src="@Model.ImageUrl" alt="Image" />
     <div class="card-body">
+        <h3 class="card-title">@Model.Name</h3>
         <p class="small">Reporter: @Model.Author.Name @Model.Author.Surname</p>
         <p class="small">Reporter's Email: @Model.Author.Email</p>
         <p class="small">Reporter's Phone Number: @Model.Author.PhoneNumber</p>
@@ -22,6 +23,7 @@
             if (@Model.Investigation != null)
             {
                 <div class="card-body">
+                    <h3 class="card-title">@Model.Investigation.Name</h3>
                     <p class="card-text">Investigation Description: @Model.Investigation.Description</p>
                     <p class="small">Investigator: @Model.Investigation.Author.Name @Model.Investigation.Author.Surname</p>
                     <p class="small">Investigator's Email: @Model.Investigation.Author.Email</p>

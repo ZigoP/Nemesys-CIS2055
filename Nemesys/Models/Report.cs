@@ -9,6 +9,7 @@ namespace Nemesys.Models
     {
         
         public int Id { get; set; }
+        public string Name { get; set; }
         public DateTime DateOfReport { get; set; }
         public string Location { get; set; }
         public DateTime DateOfSpotting { get; set; }
@@ -21,7 +22,7 @@ namespace Nemesys.Models
         public int UpVotes { get; set; }
         public int? InvestigationId { get; set; }
         public Investigation? Investigation { get; set; }
-
+        public DateTime? LastUpdateDate { get; set; }
 
     }
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Models.Contexts;
 
@@ -11,9 +12,11 @@ using Nemesys.Models.Contexts;
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230530224101_modelChanges2")]
+    partial class modelChanges2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,8 +371,8 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfReport = new DateTime(2023, 5, 30, 22, 58, 7, 800, DateTimeKind.Utc).AddTicks(4433),
-                            DateOfSpotting = new DateTime(2023, 5, 30, 22, 58, 7, 800, DateTimeKind.Utc).AddTicks(4436),
+                            DateOfReport = new DateTime(2023, 5, 30, 22, 41, 1, 233, DateTimeKind.Utc).AddTicks(2351),
+                            DateOfSpotting = new DateTime(2023, 5, 30, 22, 41, 1, 233, DateTimeKind.Utc).AddTicks(2354),
                             Description = "Pool in the Campus Hub is Broken. Don't ask how. Its just broken",
                             ImageUrl = "https://media.istockphoto.com/id/521812033/photo/lawn-chairs-overlooking-backyard-and-swimming-pool.jpg?s=1024x1024&w=is&k=20&c=IZd3LZBnIwn4PB8zuZxzOjB95jpPqH5kcxH9V1cygBc=",
                             Location = "Campus Hub Piazza",
@@ -382,8 +385,8 @@ namespace Nemesys.Migrations
                         new
                         {
                             Id = 2,
-                            DateOfReport = new DateTime(2023, 5, 29, 22, 58, 7, 800, DateTimeKind.Utc).AddTicks(4441),
-                            DateOfSpotting = new DateTime(2023, 5, 28, 22, 58, 7, 800, DateTimeKind.Utc).AddTicks(4446),
+                            DateOfReport = new DateTime(2023, 5, 29, 22, 41, 1, 233, DateTimeKind.Utc).AddTicks(2360),
+                            DateOfSpotting = new DateTime(2023, 5, 28, 22, 41, 1, 233, DateTimeKind.Utc).AddTicks(2366),
                             Description = "One of the tree's in Quads fell down",
                             ImageUrl = "https://images.freeimages.com/images/large-previews/3c2/victim-of-a-storm-2-1638820.jpg",
                             Location = "Campus Quads",
@@ -417,16 +420,16 @@ namespace Nemesys.Migrations
                         {
                             Id = "firstReporterId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a1ec27f5-dc04-48b3-903c-e7af8b7d9a61",
+                            ConcurrencyStamp = "c13a5033-0ee4-4cf2-bbaa-13f64b52bdcb",
                             Email = "patrikzigo@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "PATRIKZIGO@GMAIL.COM",
                             NormalizedUserName = "PATRIKZIGO@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEiW6ZHXKvv2e2wiSy/FEwuB0QZfIEieJxypbtilEJFnByRvHhay2FlYg3dnR5j51g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFHBEbx1xu+O4VsZRkZD/SHzuhNuN9w/o8TgIfqA4pH6ESfB16vFK3+xDKV4kYHCQA==",
                             PhoneNumber = "+356 91821310",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "36314ad6-3b62-4a4a-95be-e49e0a9b95cc",
+                            SecurityStamp = "5a398484-f6d8-4b19-8ce3-85d49b01f7b2",
                             TwoFactorEnabled = false,
                             UserName = "patrikzigo@gmail.com",
                             Name = "Patrik",
@@ -437,16 +440,16 @@ namespace Nemesys.Migrations
                         {
                             Id = "secondReporterId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1c4d3421-0661-4383-9fad-69003006df8c",
+                            ConcurrencyStamp = "1ba4f084-f602-45dc-9bfa-8c2795a12a98",
                             Email = "beyalibulut@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "BEYALIBULUT@GMAIL.COM",
                             NormalizedUserName = "BEYALIBULUT@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPIiREavYLZC5915xMwzBGreJ3IeXWzELDF1zEPZIyclP5oxZ6QmCgW6KIRRYZV2SA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFRojjx80sbBq1m9fd/COl8GZXl1/DqGQaFyCF+OU6egmKzGeN33iGIj72qo0eE21Q==",
                             PhoneNumber = "+356 99780821",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "99e7a6c9-bec5-4d16-b826-f54d61736159",
+                            SecurityStamp = "b3e5ce2d-058e-4f60-84f7-f1540f93fc7a",
                             TwoFactorEnabled = false,
                             UserName = "beyalibulut@gmail.com",
                             Name = "Ali",
@@ -466,16 +469,16 @@ namespace Nemesys.Migrations
                         {
                             Id = "firstInvestigatorId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a802fa00-8edc-49ab-b12f-c5b68cf674ff",
+                            ConcurrencyStamp = "076b1ab5-b058-4ebb-aaa4-b186fcc46b6d",
                             Email = "michael@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MICHAEL@GMAIL.COM",
                             NormalizedUserName = "MICHAEL@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI8fgo/2563yRqE1PgI6T2LksPh6l2jrbFFnh+YV1dF4cVej4LiG/5fajAc0R5bxeg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIAzCMdSQ1tZeNAzAgtzlrGwH0+lZXKgiZENEoZ2sU3Ni7l6WRsql6h3BFa9fEZpYw==",
                             PhoneNumber = "+356 91286821",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8bda27cc-fe05-45db-8853-19fc32f81ff8",
+                            SecurityStamp = "1a159dff-90da-48d5-83dd-ef5f5d895ea4",
                             TwoFactorEnabled = false,
                             UserName = "michael@gmail.com",
                             Name = "Michael",

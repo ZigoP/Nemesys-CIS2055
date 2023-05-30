@@ -52,13 +52,13 @@ namespace Nemesys.Models.Contexts
             Reporter reporter1 = new Reporter()
             {
                 Id = "firstReporterId",
-                Name = "First",
+                Name = "Patrik",
                 Surname = "Reporter",
-                UserName = "adas@gams.sca",
-                NormalizedUserName = "ADAS@GAMS.SCA",
-                Email = "adas@gams.sca",
-                NormalizedEmail = "ADAS@GAMS.SCA",
-                PhoneNumber = "1234567890",
+                UserName = "patrikzigo@gmail.com",
+                NormalizedUserName = "PATRIKZIGO@GMAIL.COM",
+                Email = "patrikzigo@gmail.com",
+                NormalizedEmail = "PATRIKZIGO@GMAIL.COM",
+                PhoneNumber = "+356 91821310",
                 ReportersRanking = 1,
                 LockoutEnabled = false,
                 EmailConfirmed = true,
@@ -68,25 +68,24 @@ namespace Nemesys.Models.Contexts
             Reporter reporter2 = new Reporter()
             {
                 Id = "secondReporterId",
-                Name = "Second",
+                Name = "Ali",
                 Surname = "Reporter",
-                UserName = "basd@gams.sca",
-                NormalizedUserName = "BASD@GAMS.SCA",
-                Email = "basd@gams.sca",
-                NormalizedEmail = "BASD@GAMS.SCA",
-                PhoneNumber = "1234567890",
+                UserName = "beyalibulut@gmail.com",
+                NormalizedUserName = "BEYALIBULUT@GMAIL.COM",
+                Email = "beyalibulut@gmail.com",
+                NormalizedEmail = "BEYALIBULUT@GMAIL.COM",
+                PhoneNumber = "+356 99780821",
                 ReportersRanking = 2,
                 LockoutEnabled = false,
                 EmailConfirmed = true,
             };          
 
             PasswordHasher<Reporter> passwordHasher = new PasswordHasher<Reporter>();
-            reporter1.PasswordHash = passwordHasher.HashPassword(reporter1, "S@fePassw0rd1"); //make sure you adhere to policies (incl confirmed etc…)
-            //modelBuilder.Entity<Reporter>().HasData(reporter1);
+            reporter1.PasswordHash = passwordHasher.HashPassword(reporter1, "S@fePassw0rd1"); 
 
             PasswordHasher<Reporter> passwordHasher2 = new PasswordHasher<Reporter>();
-            reporter2.PasswordHash = passwordHasher2.HashPassword(reporter2, "S@fePassw0rd2"); //make sure you adhere to policies (incl confirmed etc…)
-                                                                                               //modelBuilder.Entity<Reporter>().HasData(reporter2);
+            reporter2.PasswordHash = passwordHasher2.HashPassword(reporter2, "S@fePassw0rd2"); 
+                                                                                               
 
             modelBuilder.Entity<Reporter>().HasData(
                 reporter1,
@@ -96,13 +95,13 @@ namespace Nemesys.Models.Contexts
             Investigator investigator = new Investigator()
             {
                 Id = "firstInvestigatorId",
-                Name = "First",
+                Name = "Michael",
                 Surname = "Investigator",
-                UserName = "dasd@gams.sca",
-                NormalizedUserName = "DASD@GAMS.SCA",
-                Email = "dasd@gams.sca",
-                NormalizedEmail = "DASD@GAMS.SCA",
-                PhoneNumber = "1234567890",
+                UserName = "michael@gmail.com",
+                NormalizedUserName = "MICHAEL@GMAIL.COM",
+                Email = "michael@gmail.com",
+                NormalizedEmail = "MICHAEL@GMAIL.COM",
+                PhoneNumber = "+356 91286821",
                 ReportersRanking = 3,
                 LockoutEnabled = false,
                 EmailConfirmed = true,
@@ -133,28 +132,30 @@ namespace Nemesys.Models.Contexts
                 new Report()
                 {
                     Id = 1,
+                    Name = "Pool is broken",
                     DateOfReport = DateTime.UtcNow,
-                    Location = "asdasd",
+                    Location = "Campus Hub Piazza",
                     DateOfSpotting = DateTime.UtcNow,
                     TypeOfHazard = HazardTypes.Structure,
-                    Description = "asdasd",
+                    Description = "Pool in the Campus Hub is Broken. Don't ask how. Its just broken",
                     Status = StatusTypes.Open,
-                    ImageUrl = "",
+                    ImageUrl = "https://media.istockphoto.com/id/521812033/photo/lawn-chairs-overlooking-backyard-and-swimming-pool.jpg?s=1024x1024&w=is&k=20&c=IZd3LZBnIwn4PB8zuZxzOjB95jpPqH5kcxH9V1cygBc=",
                     UpVotes = 5,
                     ReporterId = reporter1.Id
                 },
                 new Report()
                 {
                     Id = 2,
+                    Name = "Fallen tree in the middle of campus",
                     DateOfReport = DateTime.UtcNow.AddDays(-1),
-                    Location = "asadsdfdvdfvdasd",
+                    Location = "Campus Quads",
                     DateOfSpotting = DateTime.UtcNow.AddDays(-2),
-                    TypeOfHazard = HazardTypes.Condition,
-                    Description = "asdvsdvvsdvsasd",
+                    TypeOfHazard = HazardTypes.UnsafeAct,
+                    Description = "One of the tree's in Quads fell down",
                     Status = StatusTypes.Open,
-                    ImageUrl = "",
+                    ImageUrl = "https://images.freeimages.com/images/large-previews/3c2/victim-of-a-storm-2-1638820.jpg",
                     UpVotes = 7,
-                    ReporterId = reporter2.Id
+                    ReporterId = reporter2.Id              
                 }
             );
                 
