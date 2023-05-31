@@ -117,7 +117,7 @@ namespace Nemesys.Models.Contexts
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole() { Id = "adminRoleId", Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "ADMIN" },
                 new IdentityRole() { Id = "reporterRoleId", Name = "Reporter", ConcurrencyStamp = "1", NormalizedName = "REPORTER" },
-                new IdentityRole() { Id = "investigatorRoleId", Name = "Invetigator", ConcurrencyStamp = "1", NormalizedName = "INVESTIGATOR" }
+                new IdentityRole() { Id = "investigatorRoleId", Name = "Investigator", ConcurrencyStamp = "1", NormalizedName = "INVESTIGATOR" }
             );
 
             //Assign existing user to admin role

@@ -26,7 +26,6 @@ namespace Nemesys.Controllers
             _logger = logger;
             _userManager = userManager;
         }
-
         public IActionResult Index()
         {
             var reports = _nemesysRepository.GetAllReports();
@@ -91,6 +90,7 @@ namespace Nemesys.Controllers
 
         [HttpGet]
         [Authorize]
+        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult CreateReport()
         {
             try
@@ -111,6 +111,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult CreateReport([Bind("Name, Location, DateOfSpotting, TypeOfHazard, Description, ImageToUpload, LastUpdateDate")] CreateReportViewModel newReport)
         {
             try
@@ -231,6 +232,7 @@ namespace Nemesys.Controllers
 
         [HttpGet]
         [Authorize]
+        [Authorize(Roles = "Investigator")]
         public IActionResult CreateInvestigation(int id) 
         {
             try
@@ -261,6 +263,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Investigator")]
         public IActionResult CreateInvestigation([Bind("Name, Description, ReportId, Status")] CreateInvestigationViewModel newInvestigation)
         {
             try
@@ -315,6 +318,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult UpVote([Bind("Id")] Report report)
         {
 
@@ -329,6 +333,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult DeleteReport([Bind("Id")] Report report)
         {
             Report reportToDelete = _nemesysRepository.GetReportById(report.Id);
@@ -346,6 +351,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Investigator")]
         public IActionResult DeleteInvestigation([Bind("Id")] Investigation investigation)
         {
             Investigation investigationToDelete = _nemesysRepository.GetInvestigationById(investigation.Id);
@@ -364,6 +370,7 @@ namespace Nemesys.Controllers
 
         [HttpGet]
         [Authorize]
+        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult UpdateReport(int id)
         {
             try
@@ -407,6 +414,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult UpdateReport([FromRoute] int id, [Bind("Name, DateOfSpotting, Description, ImageToUpload, Location, TypeOfHazard")] CreateReportViewModel updatedReport)
         {
             try
@@ -501,6 +509,7 @@ namespace Nemesys.Controllers
 
         [HttpGet]
         [Authorize]
+        [Authorize(Roles = "Investigator")]
         public IActionResult UpdateInvestigation(int id)
         {
             try
@@ -541,6 +550,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Investigator")]
         public IActionResult UpdateInvestigation([FromRoute] int id, [Bind("Name, Description, Status")] CreateInvestigationViewModel updatedInvestigation)
         {
             try

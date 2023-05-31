@@ -28,16 +28,22 @@
                     <p class="small">Investigator: @Model.Investigation.Author.Name @Model.Investigation.Author.Surname</p>
                     <p class="small">Investigator's Email: @Model.Investigation.Author.Email</p>
                     <p class="small">Investigator's Phone Number: @Model.Investigation.Author.PhoneNumber</p>
-                    <form asp-action="DeleteInvestigation" method="post" role="form" enctype="multipart/form-data">
-                        <input asp-for="@Model.Investigation.Id" type="hidden" class="form-control" value="@Model.Investigation.Id" />
-                        <div class="col-md-5">
-                            <input type="submit" class="btn btn-primary" value="Delete Investigation" />
-                        </div>
-                    </form>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Investigator"))
+                    {
+                        if (UserManager.GetUserAsync(User).Result.Id == @Model.Investigation.Author.Id)
+                        {
+                            <form asp-action="DeleteInvestigation" method="post" role="form" enctype="multipart/form-data">
+                                <input asp-for="@Model.Investigation.Id" type="hidden" class="form-control" value="@Model.Investigation.Id" />
+                                <div class="col-md-5">
+                                    <input type="submit" class="btn btn-primary" value="Delete Investigation" />
+                                </div>
+                            </form>
+                        }
+                    }
                 </div>
-                @if (User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Investigator"))
                 {
-                    if (UserManager.GetUserAsync(User).Result.Id == Model.Author.Id)
+                    if (UserManager.GetUserAsync(User).Result.Id == @Model.Investigation.Author.Id)
                     {
                         <a asp-controller="Nemesys" asp-action="UpdateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Update Investigation</a>
                     }
@@ -45,11 +51,14 @@
             }
             else
             {
-                 <a asp-controller="Nemesys" asp-action="CreateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Add Investigation</a>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Investigator"))
+                {
+                    <a asp-controller="Nemesys" asp-action="CreateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Add Investigation</a>
+                }
             }
         }
     </div>
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity.IsAuthenticated && (User.IsInRole("Reporter") || User.IsInRole("Investigator")))
     {
         if (UserManager.GetUserAsync(User).Result.Id == Model.Author.Id)
         {

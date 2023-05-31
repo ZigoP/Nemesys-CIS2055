@@ -1,5 +1,8 @@
-﻿@using Nemesys.ViewModels;
+﻿@using Microsoft.AspNetCore.Identity;
+@using Nemesys.ViewModels;
 @model ReportListViewModel
+@inject UserManager<IdentityUser> UserManager
+
 
 @{
     ViewData["Title"] = "Reports";
@@ -19,18 +22,26 @@
                 <p class="small">UpVotes: @report.UpVotes</p>
 
                     <a asp-controller="Nemesys" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
-                    <form asp-action="UpVote" method="post" role="form" enctype="multipart/form-data">
-                    <input asp-for="@report.Id" type="hidden" class="form-control" value="@report.Id" />
-                        <div class="col-md-5">
-                            <input type="submit" class="btn btn-primary" value="UpVote" />
-                        </div>
-                    </form>
-                    <form asp-action="DeleteReport" method="post" role="form" enctype="multipart/form-data">
-                    <input asp-for="@report.Id" type="hidden" class="form-control" value="@report.Id" />
-                        <div class="col-md-5">
-                            <input type="submit" class="btn btn-primary" value="Delete Report" />
-                        </div>
-                    </form>
+                @{
+                    if (User.Identity.IsAuthenticated && (User.IsInRole("Reporter") || User.IsInRole("Investigator")))
+                    {
+                        <form asp-action="UpVote" method="post" role="form" enctype="multipart/form-data">
+                            <input asp-for="@report.Id" type="hidden" class="form-control" value="@report.Id" />
+                            <div class="col-md-5">
+                                <input type="submit" class="btn btn-primary" value="UpVote" />
+                            </div>
+                        </form>
+                        if (UserManager.GetUserAsync(User).Result.Id == @report.Author.Id)
+                        {
+                            <form asp-action="DeleteReport" method="post" role="form" enctype="multipart/form-data">
+                                <input asp-for="@report.Id" type="hidden" class="form-control" value="@report.Id" />
+                                <div class="col-md-5">
+                                    <input type="submit" class="btn btn-primary" value="Delete Report" />
+                                </div>
+                            </form>
+                        }
+                    }
+                }                                   
             </div>
         </div>
     }
