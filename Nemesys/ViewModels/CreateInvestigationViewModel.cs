@@ -23,5 +23,6 @@ namespace Nemesys.ViewModels
         [Required]
         public StatusTypes Status { get; set; }
         public List<StatusTypes>? Statuses { get; set; }
+        public DateTime? LastUpdateDate { get; set; }
     }
 }

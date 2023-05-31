@@ -96,7 +96,8 @@ namespace Nemesys.Controllers
             try
             {
                 CreateReportViewModel model = new CreateReportViewModel() { 
-                    TypeOfHazards = Enum.GetValues(typeof(HazardTypes)).Cast<HazardTypes>().ToList()
+                    TypeOfHazards = Enum.GetValues(typeof(HazardTypes)).Cast<HazardTypes>().ToList(),
+                    LastUpdateDate = DateTime.Now
                 };
                 return View(model);
             }
@@ -110,7 +111,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateReport([Bind("Name, Location, DateOfSpotting, TypeOfHazard, Description, ImageToUpload")] CreateReportViewModel newReport)
+        public IActionResult CreateReport([Bind("Name, Location, DateOfSpotting, TypeOfHazard, Description, ImageToUpload, LastUpdateDate")] CreateReportViewModel newReport)
         {
             try
             {
@@ -141,8 +142,8 @@ namespace Nemesys.Controllers
                         Status = StatusTypes.Open,
                         UpVotes = 0,
                         ReporterId = _userManager.GetUserId(User),
-                        ImageUrl = "/images/nemesys/" + fileName
-
+                        ImageUrl = "/images/nemesys/" + fileName,
+                        LastUpdateDate = DateTime.UtcNow
                     };
                     _nemesysRepository.CreateReport(report);
                     return RedirectToAction("Index");
@@ -239,6 +240,9 @@ namespace Nemesys.Controllers
                     return NotFound();
                 else
                 {
+                    if (report.Status != StatusTypes.Open) {
+                        return RedirectToAction("Index");
+                    }
                     CreateInvestigationViewModel model = new CreateInvestigationViewModel()
                     {
                         ReportId = id,
@@ -355,6 +359,250 @@ namespace Nemesys.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult UpdateReport(int id)
+        {
+            try
+            {
+                var existingReport = _nemesysRepository.GetReportById(id);
+                if (existingReport != null)
+                {
+                    var currentUserId = _userManager.GetUserId(User);
+                    if (existingReport.ReporterId == currentUserId && (existingReport.Status == StatusTypes.Open))
+                    {
+                        //EditReportViewModel
+                        CreateReportViewModel model = new CreateReportViewModel()
+                        {
+                            TypeOfHazards = Enum.GetValues(typeof(HazardTypes)).Cast<HazardTypes>().ToList(),
+                            Name = existingReport.Name,
+                            DateOfSpotting = existingReport.DateOfSpotting,
+                            Description = existingReport.Description,
+                            //ImageToUpload = existingReport.ImageUrl,
+                            ImageUrl = existingReport.ImageUrl,
+                            Location = existingReport.Location,
+                            TypeOfHazard = existingReport.TypeOfHazard,
+                            //LastUpdateDate = DateTime.Now
+                            //Image to upload and type of hazards are left behind 
+
+                        };
+                        return View(model);
+                    }
+                    else
+                        return RedirectToAction("Index");
+                }
+                else
+                    return RedirectToAction("Index");
+            }            
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateReport([FromRoute] int id, [Bind("Name, DateOfSpotting, Description, ImageToUpload, Location, TypeOfHazard")] CreateReportViewModel updatedReport)
+        {
+            try
+            {
+                var modelToUpdate = _nemesysRepository.GetReportById(id);
+                if (modelToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                var currentUserId = _userManager.GetUserId(User);
+                if (modelToUpdate.ReporterId == currentUserId)
+                {
+
+                    if (ModelState.IsValid)
+                    {
+                        string imageUrl = "";
+
+                        if (updatedReport.ImageToUpload != null)
+                        {
+                            string fileName = "";
+                            //At this point you should check size, extension etc...
+                            //Then persist using a new name for consistency (e.g. new Guid)
+                            var extension = "." + updatedReport.ImageToUpload.FileName.Split('.')[updatedReport.ImageToUpload.FileName.Split('.').Length - 1];
+                            fileName = Guid.NewGuid().ToString() + extension;
+                            var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\nemesys\\" + fileName;
+                            using (var bits = new FileStream(path, FileMode.Create))
+                            {
+                                updatedReport.ImageToUpload.CopyTo(bits);
+                            }
+                            imageUrl = "/images/nemesys/" + fileName;
+                        }
+                        else
+                        {
+                            imageUrl = modelToUpdate.ImageUrl;
+                        }
+
+                        modelToUpdate.Name = updatedReport.Name;
+                        modelToUpdate.DateOfSpotting = updatedReport.DateOfSpotting;
+                        modelToUpdate.Description = updatedReport.Description;
+                        modelToUpdate.ImageUrl = imageUrl;
+                        modelToUpdate.LastUpdateDate = DateTime.Now;
+                        modelToUpdate.Location = updatedReport.Location;
+                        modelToUpdate.TypeOfHazard = updatedReport.TypeOfHazard;
+
+                        _nemesysRepository.UpdateReport(modelToUpdate);
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        var existingReport = _nemesysRepository.GetReportById(id);
+                        if (existingReport != null)
+                        {
+                            //Checking for ownership
+                            if (existingReport.ReporterId == currentUserId)
+                            {
+                                //EditReportViewModel
+                                CreateReportViewModel model = new CreateReportViewModel() // Need ViewModel for Edit
+                                {
+                                    TypeOfHazards = Enum.GetValues(typeof(HazardTypes)).Cast<HazardTypes>().ToList(),
+                                    Name = existingReport.Name,
+                                    DateOfSpotting = existingReport.DateOfSpotting,
+                                    Description = existingReport.Description,
+                                    //ImageToUpload = existingReport.ImageUrl,
+                                    ImageUrl = existingReport.ImageUrl,
+                                    Location = existingReport.Location,
+                                    TypeOfHazard = existingReport.TypeOfHazard,
+                                    //LastUpdateDate = DateTime.Now
+                                    //Image to upload and type of hazards are left behind 
+
+                                };
+                                return View(model);
+                            }
+                            else
+                                return RedirectToAction("Index");  
+                        }
+                        else
+                            return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult UpdateInvestigation(int id)
+        {
+            try
+            {
+                var existingInvestigation = _nemesysRepository.GetInvestigationById(id);
+                if (existingInvestigation != null)
+                {
+                    var currentUserId = _userManager.GetUserId(User);
+                    var investigationsReport = _nemesysRepository.GetReportById(existingInvestigation.ReportId);
+                    if (existingInvestigation.InvestigatorId == currentUserId && (investigationsReport.Status == StatusTypes.Open || investigationsReport.Status == StatusTypes.BeingInvestigated))
+                    {
+                        CreateInvestigationViewModel model = new CreateInvestigationViewModel()
+                        {
+                            Statuses = Enum.GetValues(typeof(StatusTypes)).Cast<StatusTypes>().ToList(),
+                            //Id = existingInvestigation.Id,
+                            Name = existingInvestigation.Name,
+                            Description = existingInvestigation.Description,
+                            ReportId = existingInvestigation.ReportId,
+                            Status = investigationsReport.Status,
+
+                        };
+                        model.Investigator = _nemesysRepository.GetInvestigatorById(existingInvestigation.InvestigatorId);
+                        return View(model);
+                    }
+                    else
+                        return RedirectToAction("Index");
+                }
+                else
+                    return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateInvestigation([FromRoute] int id, [Bind("Name, Description, Status")] CreateInvestigationViewModel updatedInvestigation)
+        {
+            try
+            {
+                var modelToUpdate = _nemesysRepository.GetInvestigationById(id);
+                if (modelToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                var currentUserId = _userManager.GetUserId(User);
+                if (modelToUpdate.InvestigatorId == currentUserId)
+                {
+
+                    if (ModelState.IsValid)
+                    {
+                        var investigationsReport = _nemesysRepository.GetReportById(modelToUpdate.ReportId);
+                        modelToUpdate.Name = updatedInvestigation.Name;
+                        modelToUpdate.Description = updatedInvestigation.Description;
+                        modelToUpdate.LastUpdateDate = DateTime.Now;
+                        investigationsReport.Status = updatedInvestigation.Status;
+                        _nemesysRepository.UpdateReport(investigationsReport);
+                        _nemesysRepository.UpdateInvestigation(modelToUpdate);
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        var existingInvestigation = _nemesysRepository.GetInvestigationById(id);
+                        if (existingInvestigation != null)
+                        {
+                            if (existingInvestigation.InvestigatorId == currentUserId && existingInvestigation.Report.Status == StatusTypes.Open)
+                            {
+                                CreateInvestigationViewModel model = new CreateInvestigationViewModel()
+                                {
+                                    Statuses = Enum.GetValues(typeof(StatusTypes)).Cast<StatusTypes>().ToList(),
+                                    Id = existingInvestigation.Id,
+                                    Name = existingInvestigation.Name,
+                                    Description = existingInvestigation.Description,
+                                    ReportId = existingInvestigation.ReportId,
+                                    Status = existingInvestigation.Report.Status,
+
+                                };
+                                model.Investigator = _nemesysRepository.GetInvestigatorById(existingInvestigation.InvestigatorId);
+                                return View(model);
+                            }
+                            else
+                                return RedirectToAction("Index");
+                        }
+                        else
+                            return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
         }
     }
 }

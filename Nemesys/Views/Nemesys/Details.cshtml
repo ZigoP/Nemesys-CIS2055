@@ -35,6 +35,13 @@
                         </div>
                     </form>
                 </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (UserManager.GetUserAsync(User).Result.Id == Model.Author.Id)
+                    {
+                        <a asp-controller="Nemesys" asp-action="UpdateInvestigation" asp-route-id="@Model.Id" class="btn btn-outline-primary">Update Investigation</a>
+                    }
+                }
             }
             else
             {
@@ -42,15 +49,16 @@
             }
         }
     </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (UserManager.GetUserAsync(User).Result.Id == Model.Author.Id)
+        {
+            <a asp-controller="Nemesys" asp-action="UpdateReport" asp-route-id="@Model.Id" class="btn btn-outline-primary">Update Report</a>
+        }
+    }
 </div>
 
 <a asp-controller="Nemesys" asp-action="Index" class="btn btn-primary">Back to list</a>
-@if (User.Identity.IsAuthenticated)
-{
-    if (UserManager.GetUserAsync(User).Result.Id == Model.Author.Id)
-    {
-        <a asp-controller="Nemesys" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
-    }
-}
+
 
 
