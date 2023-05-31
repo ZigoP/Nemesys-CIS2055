@@ -14,7 +14,13 @@
     @foreach (var report in Model.Reports)
     {
         <div class="card" style="width: 18rem;padding:20px; margin:20px;">
-            <img class="card-img-top" src="@report.ImageUrl" alt="Image" />
+            @{
+                if (@report.ImageUrl != null && @report.ImageUrl != "" && @report.ImageUrl != "/images/nemesys/")
+                {
+                    <img class="card-img-top" src="@report.ImageUrl" alt="Image" />
+                }
+            }
+           
             <div class="card-body">
                 <h3 class="card-title">@report.Name</h3>
                 <p class="small">Author: @report.Author.Name @report.Author.Surname</p>
@@ -23,7 +29,7 @@
 
                     <a asp-controller="Nemesys" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
                 @{
-                    if (User.Identity.IsAuthenticated && (User.IsInRole("Reporter") || User.IsInRole("Investigator")))
+                    if (User.Identity.IsAuthenticated && (User.IsInRole("Reporter") || User.IsInRole("Investigator")) && (UserManager.GetUserAsync(User).Result.Id != @report.Author.Id))
                     {
                         <form asp-action="UpVote" method="post" role="form" enctype="multipart/form-data">
                             <input asp-for="@report.Id" type="hidden" class="form-control" value="@report.Id" />

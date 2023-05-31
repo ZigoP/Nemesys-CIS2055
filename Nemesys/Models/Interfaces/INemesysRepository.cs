@@ -32,9 +32,6 @@ namespace Nemesys.Models.Interfaces
         void upvoteReport(Report report);
 
         IEnumerable<HazardTypes> getReportByHazardType();
-        //IEnumerable<HazardTypes> getInvestigationByHazardType();
-
-        //IEnumerable<StatusTypes> getInvestigationByStatus();
         IEnumerable<StatusTypes> getReportByStatus();
 
     }

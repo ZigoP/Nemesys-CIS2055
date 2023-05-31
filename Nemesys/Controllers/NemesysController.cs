@@ -326,7 +326,7 @@ namespace Nemesys.Controllers
             if (reportToUpVote != null)
             {
                 _nemesysRepository.upvoteReport(reportToUpVote);
-            }
+            }          
             return RedirectToAction("Index");
         }
 

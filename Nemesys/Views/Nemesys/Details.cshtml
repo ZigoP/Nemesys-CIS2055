@@ -8,7 +8,13 @@
 }
 
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
-    <img class="card-img-top" src="@Model.ImageUrl" alt="Image" />
+    @{
+        if (@Model.ImageUrl != null && @Model.ImageUrl != "" && @Model.ImageUrl != "/images/nemesys/")
+        {
+            <img class="card-img-top" src="@Model.ImageUrl" alt="Image" />
+
+        }
+    }
     <div class="card-body">
         <h3 class="card-title">@Model.Name</h3>
         <p class="small">Reporter: @Model.Author.Name @Model.Author.Surname</p>
